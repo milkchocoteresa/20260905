@@ -7,10 +7,16 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingTimingDiscreteCAT : ChipSettingTimingDiscrete
 {
-    public List<Vector2Int> ChipPositions;
+    private List<Vector2Int> _chipPositions;
+    public IReadOnlyList<Vector2Int> ChipPositions => _chipPositions;
 
     public ChipSettingTimingDiscreteCAT(List<Vector2Int> chipPositions, int threshold, float timeToActivation, int availableActivationTimes) : base(threshold, timeToActivation, availableActivationTimes)
     {
-        ChipPositions = chipPositions;
+        _chipPositions = new List<Vector2Int>(chipPositions);
+    }
+
+    public ChipSettingTimingDiscreteCAT(ChipSettingTimingDiscreteCAT orgn) : this(orgn._chipPositions, orgn.Threshold, orgn.TimeToActivation, orgn.AvailableActivationTimes)
+    {
+
     }
 }

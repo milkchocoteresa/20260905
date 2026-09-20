@@ -7,4 +7,5 @@ using UnityEngine;
 public class ChipSettingTimingSO : ScriptableObject
 {
     [SerializeField] private ChipSettingTiming _initialState;
+    public ChipSettingTiming InitialState => _initialState;
 }

@@ -8,5 +8,11 @@ public class ChipSettingResourceMP : ChipSettingResource
 
     public ChipSettingResourceMP(int consumptionAmount) : base(consumptionAmount)
     {
+        // 参照じゃなくてコピー渡すように注意
+    }
+
+    public ChipSettingResourceMP(ChipSettingResourceMP orgn) : this(orgn.ConsumptionAmount)
+    {
+
     }
 }

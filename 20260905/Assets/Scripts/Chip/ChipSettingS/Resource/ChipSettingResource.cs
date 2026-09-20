@@ -4,10 +4,15 @@
 [System.Serializable]
 public class ChipSettingResource
 {
-    public int consumptionAmount;
+    public int ConsumptionAmount { get; set; }
 
     public ChipSettingResource(int consumptionAmount)
     {
-        this.consumptionAmount = consumptionAmount;
+        this.ConsumptionAmount = consumptionAmount;
+    }
+
+    public ChipSettingResource(ChipSettingResource orgn) : this(orgn.ConsumptionAmount)
+    {
+
     }
 }

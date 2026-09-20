@@ -4,14 +4,19 @@
 [System.Serializable]
 public class ChipSettingTimingDiscrete : ChipSettingTiming
 {
-    public int _threshold = 1;                  // 発動までに必要な発火回数
-    public float _timeToActivation = 0;         // 効果が発動するまでの秒数
-    public int _availableActivationTimes = -1;  // 発動可能回数
+    public int Threshold { get; set; } = 1;                  // 発動までに必要な発火回数
+    public float TimeToActivation { get; set; } = 0;         // 効果が発動するまでの秒数
+    public int AvailableActivationTimes { get; set; } = -1;  // 発動可能回数
 
     public ChipSettingTimingDiscrete(int threshold, float timeToActivation, int availableActivationTimes)
     {
-        _threshold = threshold;
-        _timeToActivation = timeToActivation;
-        _availableActivationTimes = availableActivationTimes;
+        Threshold = threshold;
+        TimeToActivation = timeToActivation;
+        AvailableActivationTimes = availableActivationTimes;
+    }
+
+    public ChipSettingTimingDiscrete(ChipSettingTimingDiscrete orgn) : this(orgn.Threshold, orgn.TimeToActivation, orgn.AvailableActivationTimes)
+    {
+
     }
 }

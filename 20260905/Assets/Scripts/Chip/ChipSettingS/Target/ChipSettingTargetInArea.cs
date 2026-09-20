@@ -6,12 +6,17 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingTargetInArea : ChipSettingTarget
 {
-    public Vector2 center;
-    public float radius;
+    public Vector2 Center { get; set; }
+    public float Radius { get; set; }
 
     public ChipSettingTargetInArea(Vector2 center, float radius)
     {
-        this.center = center;
-        this.radius = radius;
+        this.Center = center;
+        this.Radius = radius;
+    }
+
+    public ChipSettingTargetInArea(ChipSettingTargetInArea orgn) : this(orgn.Center, orgn.Radius)
+    {
+
     }
 }

@@ -4,10 +4,15 @@
 [System.Serializable]
 public class ChipSettingResourceEffect : ChipSettingResource
 {
-    public Chip.Effect effect;
+    public GameEnums.Effect Effect { get; set; }
 
-    public ChipSettingResourceEffect(Chip.Effect effect, int consumptionAmount) : base(consumptionAmount)
+    public ChipSettingResourceEffect(GameEnums.Effect effect, int consumptionAmount) : base(consumptionAmount)
     {
-        this.effect = effect;
+        this.Effect = effect;
+    }
+
+    public ChipSettingResourceEffect(ChipSettingResourceEffect orgn) : this(orgn.Effect, orgn.ConsumptionAmount)
+    {
+
     }
 }

@@ -4,12 +4,17 @@
 [System.Serializable]
 public class ChipSettingTimingContinuous : ChipSettingTiming
 {
-    public ChipSettingTimingDiscrete start; // 開始
-    public ChipSettingTimingDiscrete end;   // 終了
+    public ChipSettingTimingDiscrete Start { get; set; }    // 開始
+    public ChipSettingTimingDiscrete End { get; set; }      // 終了
 
     public ChipSettingTimingContinuous(ChipSettingTimingDiscrete start, ChipSettingTimingDiscrete end)
     {
-        this.start = start;
-        this.end = end;
+        this.Start = new ChipSettingTimingDiscrete(start);
+        this.End = new ChipSettingTimingDiscrete(end);
+    }
+
+    public ChipSettingTimingContinuous(ChipSettingTimingContinuous orgn) : this(orgn.Start, orgn.End)
+    {
+
     }
 }

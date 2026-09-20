@@ -7,4 +7,5 @@ using UnityEngine;
 public class ChipSettingReferenceSO : ScriptableObject
 {
     [SerializeField] private ChipSettingReference _initialState;
+    public ChipSettingReference InitialState => _initialState;
 }

@@ -7,10 +7,16 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingReferenceChip : ChipSettingReference
 {
-    public List<Vector2Int> chipPositions;
+    private List<Vector2Int> _chipPositions;
+    public IReadOnlyList<Vector2Int> ChipPositions => _chipPositions;
 
-    public ChipSettingReferenceChip(List<Vector2Int> chipPosition)
+    public ChipSettingReferenceChip(IReadOnlyList<Vector2Int> chipPosition)
     {
-        this.chipPositions = chipPosition;
+        this._chipPositions = new List<Vector2Int>(chipPosition);
+    }
+
+    public ChipSettingReferenceChip(ChipSettingReferenceChip orgn) : this(orgn.ChipPositions)
+    {
+
     }
 }

@@ -7,4 +7,5 @@ using UnityEngine;
 public class ChipSettingResourceSO : ScriptableObject
 {
     [SerializeField] private ChipSettingResource _initialState;
+    public ChipSettingResource InitialState => _initialState;
 }
