@@ -1,3 +1,4 @@
+using UnityEngine;
 /// <summary>
 /// チップの離散的発動タイミングのStaminaTriggerとHPTrigger版
 /// </summary>
@@ -12,18 +13,22 @@ public class ChipSettingTimingDiscreteSTOrHPT : ChipSettingTimingDiscrete
         LessThan    // 未満
     }
 
-    public int rate { get; set; }
-    public Inequalities inequality { get; set; }
-    public bool availability { get; set; }
+    [SerializeField] private int _rate;                 // スタミナまたはHPの発火タイミングとなる割合
+    [SerializeField] private Inequalities _inequality;  // 上記の割合に対する不等式
+    [SerializeField] private bool _availability;        // 発火可能かどうか
 
-    public ChipSettingTimingDiscreteSTOrHPT(int rate, Inequalities inequality, bool availability, int threshold, float timeToActivation, int availableActivationTimes) : base(threshold, timeToActivation, availableActivationTimes)
+    public int Rate => _rate;
+    public Inequalities Inequality => _inequality;
+    public bool Availability => _availability;
+
+    public ChipSettingTimingDiscreteSTOrHPT(GameEnums.Timing timing, int rate, Inequalities inequality, bool availability, int threshold, float timeToActivation, int availableActivationTimes) : base(timing, threshold, timeToActivation, availableActivationTimes)
     {
-        this.rate = rate;
-        this.inequality = inequality;
-        this.availability = availability;
+        this._rate = rate;
+        this._inequality = inequality;
+        this._availability = availability;
     }
 
-    public ChipSettingTimingDiscreteSTOrHPT(ChipSettingTimingDiscreteSTOrHPT orgn) : this(orgn.rate, orgn.inequality, orgn.availability, orgn.Threshold, orgn.TimeToActivation, orgn.AvailableActivationTimes)
+    public ChipSettingTimingDiscreteSTOrHPT(ChipSettingTimingDiscreteSTOrHPT orgn) : this(orgn.Timing, orgn.Rate, orgn.Inequality, orgn.Availability, orgn.Threshold, orgn.TimeToActivation, orgn.AvailableActivationTimes)
     {
 
     }

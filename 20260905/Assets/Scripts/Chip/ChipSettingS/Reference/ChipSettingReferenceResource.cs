@@ -1,17 +1,19 @@
+using UnityEngine;
 /// <summary>
 /// チップの効果が発動するときに参照するリソース
 /// </summary>
 [System.Serializable]
 public class ChipSettingReferenceResource : ChipSettingReference
 {
-    public ChipSettingResource Resource { get; set; }
+    [SerializeField] private ChipSettingResource _resource;
+    public ChipSettingResource Resource => _resource;
 
-    public ChipSettingReferenceResource(ChipSettingResource resource)
+    public ChipSettingReferenceResource(GameEnums.Reference reference, ChipSettingResource resource) : base(reference)
     {
-        this.Resource = new ChipSettingResource(resource);
+        this._resource = new ChipSettingResource(resource);
     }
 
-    public ChipSettingReferenceResource(ChipSettingReferenceResource orgn) : this(orgn.Resource)
+    public ChipSettingReferenceResource(ChipSettingReferenceResource orgn) : this(orgn.Reference, orgn.Resource)
     {
 
     }

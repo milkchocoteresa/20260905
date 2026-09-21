@@ -2,6 +2,12 @@ public class GameEnums
 {
     // 複数選択可能にしたい場合はusing Systemで[Flags]属性を付ける
 
+    public enum Type
+    {
+        Predicate,
+        Modifier
+    }
+
     /// <summary>
     /// チップが有効か無効か
     /// <list type="bullet">

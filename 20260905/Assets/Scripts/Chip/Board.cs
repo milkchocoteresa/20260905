@@ -1,13 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Board
 {
+    protected Chip[,] _chips;
+
     public Board(Vector2Int size)
     {
         _chips = new Chip[size.x, size.y];
     }
-
-    protected Chip[,] _chips;
 
     protected bool addChip(Vector2Int pos, Chip chip)
     {
@@ -40,9 +41,19 @@ public abstract class Board
         }
     }
 
+
+
     public abstract bool RegisterChip(Vector2Int pos, Chip chip);
 
     public abstract Chip UnregisterChip(Vector2Int pos);
 
-    // ボードの効果をあらかじめツリーにしておく
+    public List<Chip> GetChipFromPos(List<Vector2Int> positions)
+    {
+        List<Chip> list = new List<Chip>();
+        foreach (Vector2Int pos in positions)
+        {
+            list.Add(_chips[pos.x, pos.y]);
+        }
+        return list;
+    }
 }

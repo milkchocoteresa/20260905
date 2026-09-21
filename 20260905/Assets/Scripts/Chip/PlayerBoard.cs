@@ -12,7 +12,9 @@ public class PlayerBoard : Board
     public override bool RegisterChip(Vector2Int pos, Chip chip)
     {
         _inventory.UnregisterChip(removeChip(pos));
-        return addChip(pos, chip);
+        bool result = addChip(pos, chip);
+
+        return result;
     }
 
     public override Chip UnregisterChip(Vector2Int pos)

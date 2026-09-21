@@ -6,12 +6,12 @@ public class ChipSettingResourceMP : ChipSettingResource
 {
     // どのMPタンクか
 
-    public ChipSettingResourceMP(int consumptionAmount) : base(consumptionAmount)
+    public ChipSettingResourceMP(GameEnums.Resource resource, int consumptionAmount) : base(resource, consumptionAmount)
     {
         // 参照じゃなくてコピー渡すように注意
     }
 
-    public ChipSettingResourceMP(ChipSettingResourceMP orgn) : this(orgn.ConsumptionAmount)
+    public ChipSettingResourceMP(ChipSettingResourceMP orgn) : this(orgn.Resource, orgn.ConsumptionAmount)
     {
 
     }

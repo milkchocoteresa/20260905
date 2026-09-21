@@ -6,16 +6,19 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingTargetInArea : ChipSettingTarget
 {
-    public Vector2 Center { get; set; }
-    public float Radius { get; set; }
+    [SerializeField] private Vector2 _center;
+    [SerializeField] private float _radius;
 
-    public ChipSettingTargetInArea(Vector2 center, float radius)
+    public Vector2 Center => _center;
+    public float Radius => _radius;
+
+    public ChipSettingTargetInArea(GameEnums.Target target, Vector2 center, float radius) : base(target)
     {
-        this.Center = center;
-        this.Radius = radius;
+        this._center = center;
+        this._radius = radius;
     }
 
-    public ChipSettingTargetInArea(ChipSettingTargetInArea orgn) : this(orgn.Center, orgn.Radius)
+    public ChipSettingTargetInArea(ChipSettingTargetInArea orgn) : this(orgn.Target, orgn.Center, orgn.Radius)
     {
 
     }

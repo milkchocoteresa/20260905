@@ -9,17 +9,17 @@ public class ChipGraph
     private class Node
     {
         public Chip Chip { get; }
-        public List<Node> TriggerChipTo { get; } = new();
-        public List<Node> ReferenceChipTo { get; } = new();
-        public List<Node> CostChipTo { get; } = new();
-        public List<Node> ActionChipTo { get; } = new();
+        public List<Node> TimTo { get; } = new();
+        public List<Node> RefTo { get; } = new();
+        public List<Node> ResTo { get; } = new();
+        public List<Node> TarTo { get; } = new();
 
         public bool HasDynamicReference { get; set; }
     }
 
-    private List<Chip> _chipsOnBoard;
+    private List<Chip> _chipsOnBoard = new List<Chip>();
 
-    private List<Node> _roots;
+    private List<Node> _roots = new List<Node>();
 
 
 }

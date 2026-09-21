@@ -7,15 +7,15 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingTimingDiscreteCAT : ChipSettingTimingDiscrete
 {
-    private List<Vector2Int> _chipPositions;
+    [SerializeField] private List<Vector2Int> _chipPositions; // トリガーとなるチップの場所
     public IReadOnlyList<Vector2Int> ChipPositions => _chipPositions;
 
-    public ChipSettingTimingDiscreteCAT(List<Vector2Int> chipPositions, int threshold, float timeToActivation, int availableActivationTimes) : base(threshold, timeToActivation, availableActivationTimes)
+    public ChipSettingTimingDiscreteCAT(GameEnums.Timing timing, List<Vector2Int> chipPositions, int threshold, float timeToActivation, int availableActivationTimes) : base(timing, threshold, timeToActivation, availableActivationTimes)
     {
         _chipPositions = new List<Vector2Int>(chipPositions);
     }
 
-    public ChipSettingTimingDiscreteCAT(ChipSettingTimingDiscreteCAT orgn) : this(orgn._chipPositions, orgn.Threshold, orgn.TimeToActivation, orgn.AvailableActivationTimes)
+    public ChipSettingTimingDiscreteCAT(ChipSettingTimingDiscreteCAT orgn) : this(orgn.Timing, orgn._chipPositions, orgn.Threshold, orgn.TimeToActivation, orgn.AvailableActivationTimes)
     {
 
     }

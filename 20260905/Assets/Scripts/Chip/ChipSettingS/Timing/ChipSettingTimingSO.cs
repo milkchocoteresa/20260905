@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -6,6 +7,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Chips/ChipSettingTiming")]
 public class ChipSettingTimingSO : ScriptableObject
 {
-    [SerializeField] private ChipSettingTiming _initialState;
-    public ChipSettingTiming InitialState => _initialState;
+    [SerializeField] private List<ChipSettingTiming> _initialState;
+    public IReadOnlyList<ChipSettingTiming> InitialState => _initialState;
 }
