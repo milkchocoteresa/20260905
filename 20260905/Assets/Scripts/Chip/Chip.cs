@@ -8,9 +8,10 @@ public class Chip : MonoBehaviour
 
     private void Awake()
     {
-        Type = _setting.Type;
+        Role = _setting.Type;
         Availability = _setting.Availability;
         Mobility = _setting.Mobility;
+
 
         TimDetail = _setting.Timing.InitialState switch
         {
@@ -44,9 +45,10 @@ public class Chip : MonoBehaviour
         };
     }
 
-    public GameEnums.Type Type { get; private set; }
+    public GameEnums.Role Role { get; private set; }
     public GameEnums.Availability Availability { get; private set; }
     public GameEnums.Mobility Mobility { get; private set; }
+    public GameEnums.Condition Condition { get; private set; }
     public ChipSettingTiming TimDetail { get; private set; }
     public ChipSettingReference RefDetail { get; private set; }
     public ChipSettingResource ResDetail { get; private set; }

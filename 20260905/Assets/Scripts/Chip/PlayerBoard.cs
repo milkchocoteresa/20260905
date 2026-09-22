@@ -11,16 +11,19 @@ public class PlayerBoard : Board
 
     public override bool RegisterChip(Vector2Int pos, Chip chip)
     {
-        _inventory.UnregisterChip(removeChip(pos));
-        bool result = addChip(pos, chip);
+        Chip removed = RemoveChip(pos);
+        _inventory.RegisterChip(removed);
 
+        bool result = AddChip(pos, chip);
+        // 取り除いたチップと組み込んだチップをChipGraphに報告
         return result;
     }
 
     public override Chip UnregisterChip(Vector2Int pos)
     {
-        Chip chip = removeChip(pos);
-        _inventory.RegisterChip(chip);
-        return chip;
+        Chip removed = RemoveChip(pos);
+        // 取り除いたチップをChipGraphに報告
+        _inventory.RegisterChip(removed);
+        return removed;
     }
 }

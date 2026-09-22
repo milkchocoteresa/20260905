@@ -7,31 +7,27 @@ public class Inventory
 
     public IReadOnlyList<Chip> Chips => _chips;
 
-    public bool RegisterChip(Chip chip)
+    /// <summary>
+    /// チップをインベントリに入れる
+    /// </summary>
+    public void RegisterChip(Chip chip)
     {
         if (_chips.Count == 20)
         {
-            // chipを地面に吐き出す処理を追加
-            return false;
+            // もともとあったチップを地面にはじき出す処理を追加
         }
         else
         {
             _chips.Add(chip);
             // _chipの順番を整理する処理を追加
-            return true;
         }
     }
 
-    public bool UnregisterChip(Chip chip)
+    /// <summary>
+    /// チップをインベントリから削除する
+    /// </summary>
+    public void UnregisterChip(Chip chip)
     {
-        if (!_chips.Contains(chip))
-        {
-            return false;
-        }
-        else
-        {
-            _chips.Remove(chip);
-            return true;
-        }
+        _chips.Remove(chip);
     }
 }

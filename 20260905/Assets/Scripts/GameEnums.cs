@@ -2,7 +2,14 @@ public class GameEnums
 {
     // 複数選択可能にしたい場合はusing Systemで[Flags]属性を付ける
 
-    public enum Type
+    /// <summary>
+    /// 述語チップか修飾語チップか
+    /// <list type="bullet">
+    ///   <item><term>Predicate</term><description>述語</description></item>
+    ///   <item><term>Modifier</term><description>修飾語</description></item>
+    /// </list>
+    /// </summary>
+    public enum Role
     {
         Predicate,
         Modifier
@@ -22,6 +29,36 @@ public class GameEnums
     }
 
     /// <summary>
+    /// チップ配置時に決まる、チップが有効になるための条件
+    /// <list type="bullet">
+    ///   <item><term>None</term><description>条件なし</description></item>
+    ///   <item><term>Chip</term><description>周囲のチップの配置</description></item>
+    /// </list>
+    /// </summary>
+    public enum Condition // チップ配置時に決まる、チップが有効になるための条件
+    {
+        None,   // 条件なし
+        Chip,   // 周囲のチップの配置(チップの位置を記録するVector2IntのListとChipSettingSO)
+    }
+
+    /// <summary>
+    /// 以上, 以下, より上, 未満を表す
+    /// <list type="bullet">
+    ///   <item><term>AtLeast</term><description>以上</description></item>
+    ///   <item><term>AtMost</term><description>以下</description></item>
+    ///   <item><term>MoreThan</term><description>より上</description></item>
+    ///   <item><term>LessThan</term><description>未満</description></item>
+    /// </list>
+    /// </summary>
+    public enum Inequalities // 以上, 以下, より上, 未満を表す
+    {
+        AtLeast,    // 以上
+        AtMost,     // 以下
+        MoreThan,   // より上
+        LessThan    // 未満
+    }
+
+    /// <summary>
     /// チップが移動可能かどうか
     /// <list type="bullet">
     ///   <item><term>Immovable</term><description>移動不可能</description></item>
@@ -36,11 +73,13 @@ public class GameEnums
 
     /// <summary>
     /// 発動タイミング<br/>
-    /// ===離散的タイミング===<br/>
-    /// =====追加情報が不要なもの=====
     /// <list type="bullet">
     ///   <item><term>None</term><description>発動しない</description></item>
     ///   <item><term>Passive</term><description>常時</description></item>
+    /// </list>
+    /// ===離散的タイミング===(基本情報: 発動までに必要な回数, 発動までにかかる時間, 発動可能回数)<br/>
+    /// =====追加情報が不要なもの=====
+    /// <list type="bullet">
     ///   <item><term>Hit</term><description>攻撃がヒットしたとき</description></item>
     ///   <item><term>TakeDamage</term><description>被ダメ時</description></item>
     ///   <item><term>FullResource</term><description>一定以上のリソースがチップに貯まったとき</description></item>
@@ -51,21 +90,22 @@ public class GameEnums
     ///   <item><term>ChipActionTrigger</term><description>指定した位置にあるチップに連動して</description></item>
     ///   <item><term>StaminaTrigger</term><description>スタミナの変化に連動して</description></item>
     ///   <item><term>HPTrigger</term><description>HPの変化に連動して</description></item>
-    ///   
+    /// </list>
     /// ===連続的タイミング===
+    /// <list type="bullet">
     ///   <item><term>RestrictedPassive</term><description>条件を満たしているとき常に</description></item>
     /// </list>
     /// </summary>
     public enum Timing // 発動タイミング
     {
         None,           // 発動しない
-
-        // 離散的タイミング(発動に必要な回数 + 発動までの時間 + 発動可能回数)discrete
-        // 追加情報が不要なもの
         Passive,        // 常時
+
+
+        // 離散的タイミングdiscrete(基本情報: 発動に必要な回数, 発動までの時間, 発動可能回数)
+        // 追加情報が不要なもの
         Hit,            // 攻撃ヒット時
         TakeDamage,     // 被ダメ時
-        FullResource,   // 一定以上のリソースがチップに貯まったとき
         OrbTrigger,     // オーブの効果が発動したとき
 
         // 追加情報が必要なもの
@@ -83,32 +123,37 @@ public class GameEnums
     /// <list type="bullet">
     ///   <item><term>None</term><description>何も参照しない</description></item>
     ///   <item><term>Chip</term><description>指定した位置にあるチップ</description></item>
-    ///   <item><term>Resource</term><description>リソース</description></item>
+    ///   <item><term>MP</term><description>MP</description></item>
+    ///   <item><term>Stamina</term><description>Stamina</description></item>
+    ///   <item><term>HP</term><description>HP</description></item>
     ///   <item><term>Enemy</term><description>敵</description></item>
     /// </list>
     /// </summary>
     public enum Reference // 何を参照するか
     {
         None,           // 何も参照しない
-        Chip,           // 指定した位置にあるチップ(種類)
-        Resource,       // リソース(Resource)
+        Chip,           // 指定した位置にあるチップ(ChipSettingSO)
+        MP,             // MP
+        Stamina,        // スタミナ
+        HP,             // HP
         Enemy,          // 敵(数、HP)
     }
 
     /// <summary>
     /// 何を消費するか
     /// <list type="bullet">
+    ///   <item><term>None</term><description>何も消費しない</description></item>
     ///   <item><term>Stamina</term><description>スタミナ</description></item>
     ///   <item><term>MP</term><description>MP</description></item>
     ///   <item><term>HP</term><description>HP</description></item>
     ///   <item><term>Effect</term><description>エフェクト</description></item>
     /// </list>
     /// </summary>
-    public enum Resource // 何を消費するか(消費量)
+    public enum Resource // 何を消費するか(基本情報: 消費量)
     {
-        None,           // 消費しない
-        Stamina,        // スタミナ
+        None,           // 何も消費しない
         MP,             // MP(MPタンクチップ)
+        Stamina,        // スタミナ
         HP,             // HP
         Effect,         // エフェクト(エフェクトの種類)
     }

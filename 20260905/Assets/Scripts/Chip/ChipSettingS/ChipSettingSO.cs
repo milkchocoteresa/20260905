@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Chips/ChipSetting")]
 public class ChipSettingSO : ScriptableObject
 {
-    [SerializeField] private GameEnums.Type _type;
+    [SerializeField] private GameEnums.Role _type;
     [SerializeField] private GameEnums.Availability _availability;
     [SerializeField] private GameEnums.Mobility _mobility;
 
@@ -14,7 +14,7 @@ public class ChipSettingSO : ScriptableObject
 
     // 見た目のスプライト追加
 
-    public GameEnums.Type Type => _type;
+    public GameEnums.Role Type => _type;
     public GameEnums.Availability Availability => _availability;
     public GameEnums.Mobility Mobility => _mobility;
 

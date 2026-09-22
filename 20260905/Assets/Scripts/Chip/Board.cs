@@ -10,13 +10,12 @@ public abstract class Board
         _chips = new Chip[size.x, size.y];
     }
 
-    protected bool addChip(Vector2Int pos, Chip chip)
+    /// <summary>
+    /// ソケットの場所と組み込むチップを受け取り、成功したかをbool値を返す。
+    /// </summary>
+    protected bool AddChip(Vector2Int pos, Chip chip)
     {
-        if (chip == null)
-        {
-            return false;
-        }
-        else if (_chips[pos.x, pos.y] != null)
+        if (chip == null || _chips[pos.x, pos.y] != null)
         {
             return false;
         }
@@ -27,7 +26,10 @@ public abstract class Board
         }
     }
 
-    protected Chip removeChip(Vector2Int pos)
+    /// <summary>
+    /// チップを取り除くソケットの場所を受け取り、取り除いたチップを返す。
+    /// </summary>
+    protected Chip RemoveChip(Vector2Int pos)
     {
         Chip removed;
         if ((removed = _chips[pos.x, pos.y]) == null)
@@ -42,7 +44,9 @@ public abstract class Board
     }
 
 
-
+    /// <summary>
+    /// チップの登録をする。ChipGraphに登録したチップ
+    /// </summary>
     public abstract bool RegisterChip(Vector2Int pos, Chip chip);
 
     public abstract Chip UnregisterChip(Vector2Int pos);

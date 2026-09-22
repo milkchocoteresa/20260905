@@ -5,23 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingTimingDiscreteSTOrHPT : ChipSettingTimingDiscrete
 {
-    public enum Inequalities
-    {
-        AtLeast,    // 以上
-        AtMost,     // 以下
-        MoreThan,   // より上
-        LessThan    // 未満
-    }
-
     [SerializeField] private int _rate;                 // スタミナまたはHPの発火タイミングとなる割合
-    [SerializeField] private Inequalities _inequality;  // 上記の割合に対する不等式
+    [SerializeField] private GameEnums.Inequalities _inequality;  // 上記の割合に対する不等式
     [SerializeField] private bool _availability;        // 発火可能かどうか
 
     public int Rate => _rate;
-    public Inequalities Inequality => _inequality;
+    public GameEnums.Inequalities Inequality => _inequality;
     public bool Availability => _availability;
 
-    public ChipSettingTimingDiscreteSTOrHPT(GameEnums.Timing timing, int rate, Inequalities inequality, bool availability, int threshold, float timeToActivation, int availableActivationTimes) : base(timing, threshold, timeToActivation, availableActivationTimes)
+    public ChipSettingTimingDiscreteSTOrHPT(GameEnums.Timing timing, int rate, GameEnums.Inequalities inequality, bool availability, int threshold, float timeToActivation, int availableActivationTimes) : base(timing, threshold, timeToActivation, availableActivationTimes)
     {
         this._rate = rate;
         this._inequality = inequality;
