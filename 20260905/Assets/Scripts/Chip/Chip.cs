@@ -12,35 +12,40 @@ public class Chip : MonoBehaviour
         Availability = _setting.Availability;
         Mobility = _setting.Mobility;
 
-
-        TimDetail = _setting.Timing.InitialState switch
+        Condition = _setting.Condition.InitialState switch
         {
-            ChipSettingTimingDiscreteCAT det => new ChipSettingTimingDiscreteCAT(det),
-            ChipSettingTimingDiscreteSTOrHPT det => new ChipSettingTimingDiscreteSTOrHPT(det),
-            ChipSettingTimingDiscrete det => new ChipSettingTimingDiscrete(det),
-            ChipSettingTimingContinuous det => new ChipSettingTimingContinuous(det),
+            ChipSettingConditionChip con => new ChipSettingConditionChip(con),
+            _ => null,
+        };
+
+        Timings = _setting.Timing.InitialState switch
+        {
+            List<ChipSettingTimingDiscreteCAT> tim => new List<ChipSettingTimingDiscreteCAT>(tim),
+            List<ChipSettingTimingDiscreteSTOrHPT> tim => new List<ChipSettingTimingDiscreteSTOrHPT>(tim),
+            List<ChipSettingTimingDiscrete> tim => new List<ChipSettingTimingDiscrete>(tim),
+            List<ChipSettingTimingContinuous> tim => new List<ChipSettingTimingContinuous>(tim),
             _ => null
         };
 
-        RefDetail = _setting.Reference.InitialState switch
+        References = _setting.Reference.InitialState switch
         {
-            ChipSettingReferenceChip det => new ChipSettingReferenceChip(det),
-            ChipSettingReferenceResource det => new ChipSettingReferenceResource(det),
+            List<ChipSettingReferenceChip> refe => new List<ChipSettingReferenceChip>(refe),
+            List<ChipSettingReferenceResource> refe => new List<ChipSettingReferenceResource>(refe),
             _ => null
         };
 
-        ResDetail = _setting.Resource.InitialState switch
+        Resources = _setting.Resource.InitialState switch
         {
-            ChipSettingResourceMP det => new ChipSettingResourceMP(det),
-            ChipSettingResourceEffect det => new ChipSettingResourceEffect(det),
-            ChipSettingResource det => new ChipSettingResource(det),
+            List<ChipSettingResourceMP> res => new List<ChipSettingResourceMP>(res),
+            List<ChipSettingResourceEffect> res => new List<ChipSettingResourceEffect>(res),
+            List<ChipSettingResource> res => new List<ChipSettingResource>(res),
             _ => null
         };
 
-        TarDetail = _setting.Target.InitialState switch
+        Targets = _setting.Target.InitialState switch
         {
-            ChipSettingTargetChip det => new ChipSettingTargetChip(det),
-            ChipSettingTargetInArea det => new ChipSettingTargetInArea(det),
+            List<ChipSettingTargetChip> tar => new List<ChipSettingTargetChip>(tar),
+            List<ChipSettingTargetInArea> tar => new List<ChipSettingTargetInArea>(tar),
             _ => null
         };
     }
@@ -48,11 +53,12 @@ public class Chip : MonoBehaviour
     public GameEnums.Role Role { get; private set; }
     public GameEnums.Availability Availability { get; private set; }
     public GameEnums.Mobility Mobility { get; private set; }
-    public GameEnums.Condition Condition { get; private set; }
-    public ChipSettingTiming TimDetail { get; private set; }
-    public ChipSettingReference RefDetail { get; private set; }
-    public ChipSettingResource ResDetail { get; private set; }
-    public ChipSettingTarget TarDetail { get; private set; }
+
+    public ChipSettingCondition Condition { get; private set; }
+    public IReadOnlyList<ChipSettingTiming> Timings { get; private set; }
+    public IReadOnlyList<ChipSettingReference> References { get; private set; }
+    public IReadOnlyList<ChipSettingResource> Resources { get; private set; }
+    public IReadOnlyList<ChipSettingTarget> Targets { get; private set; }
 
     public void SetAvailability(GameEnums.Availability newAva)
     {
