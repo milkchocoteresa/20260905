@@ -7,11 +7,9 @@ public class ChipSettingSO : ScriptableObject
     [SerializeField] private GameEnums.Availability _availability;
     [SerializeField] private GameEnums.Mobility _mobility;
 
-    [SerializeField] private ChipSettingConditionSO _condition;
-    [SerializeField] private ChipSettingTimingSO _timing;
-    [SerializeField] private ChipSettingReferenceSO _reference;
-    [SerializeField] private ChipSettingResourceSO _resource;
-    [SerializeField] private ChipSettingTargetSO _target;
+    [SerializeReference] private ChipSettingConditionSO _condition;
+
+    [SerializeField] private ChipRule _chipRule;
 
     // 見た目のスプライト追加
 
@@ -20,8 +18,5 @@ public class ChipSettingSO : ScriptableObject
     public GameEnums.Mobility Mobility => _mobility;
 
     public ChipSettingConditionSO Condition => _condition;
-    public ChipSettingTimingSO Timing => _timing;
-    public ChipSettingReferenceSO Reference => _reference;
-    public ChipSettingResourceSO Resource => _resource;
-    public ChipSettingTargetSO Target => _target;
+    public ChipRule ChipRule => _chipRule;
 }

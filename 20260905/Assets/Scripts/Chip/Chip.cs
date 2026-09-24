@@ -18,36 +18,7 @@ public class Chip : MonoBehaviour
             _ => null,
         };
 
-        Timings = _setting.Timing.InitialState switch
-        {
-            List<ChipSettingTimingDiscreteCAT> tim => new List<ChipSettingTimingDiscreteCAT>(tim),
-            List<ChipSettingTimingDiscreteSTOrHPT> tim => new List<ChipSettingTimingDiscreteSTOrHPT>(tim),
-            List<ChipSettingTimingDiscrete> tim => new List<ChipSettingTimingDiscrete>(tim),
-            List<ChipSettingTimingContinuous> tim => new List<ChipSettingTimingContinuous>(tim),
-            _ => null
-        };
 
-        References = _setting.Reference.InitialState switch
-        {
-            List<ChipSettingReferenceChip> refe => new List<ChipSettingReferenceChip>(refe),
-            List<ChipSettingReferenceResource> refe => new List<ChipSettingReferenceResource>(refe),
-            _ => null
-        };
-
-        Resources = _setting.Resource.InitialState switch
-        {
-            List<ChipSettingResourceMP> res => new List<ChipSettingResourceMP>(res),
-            List<ChipSettingResourceEffect> res => new List<ChipSettingResourceEffect>(res),
-            List<ChipSettingResource> res => new List<ChipSettingResource>(res),
-            _ => null
-        };
-
-        Targets = _setting.Target.InitialState switch
-        {
-            List<ChipSettingTargetChip> tar => new List<ChipSettingTargetChip>(tar),
-            List<ChipSettingTargetInArea> tar => new List<ChipSettingTargetInArea>(tar),
-            _ => null
-        };
     }
 
     public GameEnums.Role Role { get; private set; }
