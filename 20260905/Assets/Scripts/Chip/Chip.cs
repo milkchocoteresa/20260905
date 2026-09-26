@@ -1,35 +1,31 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Chip : MonoBehaviour
+public class Chip
 {
-    [SerializeField] private ChipSettingSO _setting;
-    [SerializeField] private ChipCalculationSO _calculation;
-
-    private void Awake()
+    public Chip(ChipSettingSO setting)
     {
-        Role = _setting.Type;
-        Availability = _setting.Availability;
-        Mobility = _setting.Mobility;
-
-        Condition = _setting.Condition.InitialState switch
-        {
-            ChipSettingConditionChip con => new ChipSettingConditionChip(con),
-            _ => null,
-        };
-
+        Setting = setting;
+        Role = setting.Type;
+        Availability = setting.Availability;
+        Mobility = setting.Mobility;
+        Condition = setting.Condition;
+        Rule = setting.ChipRule;
+        ActionAvailability = GameEnums.Availability.Available;
 
     }
 
-    public GameEnums.Role Role { get; private set; }
+    public ChipSettingSO Setting { get; private set; }
+
+    public GameEnums.Role Role { get; }
     public GameEnums.Availability Availability { get; private set; }
     public GameEnums.Mobility Mobility { get; private set; }
+    public ChipSettingCondition Condition { get; }
+    public ChipSettingRule Rule { get; }
 
-    public ChipSettingCondition Condition { get; private set; }
-    public IReadOnlyList<ChipSettingTiming> Timings { get; private set; }
-    public IReadOnlyList<ChipSettingReference> References { get; private set; }
-    public IReadOnlyList<ChipSettingResource> Resources { get; private set; }
-    public IReadOnlyList<ChipSettingTarget> Targets { get; private set; }
+    public GameEnums.Availability ActionAvailability { get; private set; }
+    public int[] referenceCount { get; private set; }
+
+
 
     public void SetAvailability(GameEnums.Availability newAva)
     {

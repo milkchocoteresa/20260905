@@ -9,12 +9,7 @@ public class ChipSettingCondition
     [SerializeField] private GameEnums.Condition _condition;
     public GameEnums.Condition Condition => _condition;
 
-    public ChipSettingCondition(GameEnums.Condition condition)
-    {
-        this._condition = condition;
-    }
-
-    public ChipSettingCondition(ChipSettingCondition orgn) : this(orgn.Condition)
+    public ChipSettingCondition()
     {
 
     }

@@ -10,13 +10,7 @@ public class ChipSettingResource
     public GameEnums.Resource Resource => _resource;
     public int ConsumptionAmount => _consumptionAmount;
 
-    public ChipSettingResource(GameEnums.Resource resource, int consumptionAmount)
-    {
-        this._resource = resource;
-        this._consumptionAmount = consumptionAmount;
-    }
-
-    public ChipSettingResource(ChipSettingResource orgn) : this(orgn.Resource, orgn.ConsumptionAmount)
+    public ChipSettingResource()
     {
 
     }

@@ -12,13 +12,7 @@ public class ChipSettingConditionChip : ChipSettingCondition
     public IReadOnlyList<Vector2Int> Positions => _positions;
     public IReadOnlyDictionary<ChipSettingSO, int> ChipTypesAndNums => _chipTypesAndNums;
 
-    public ChipSettingConditionChip(GameEnums.Condition condition, IReadOnlyList<Vector2Int> positions, IReadOnlyDictionary<ChipSettingSO, int> chipTypesAndNums) : base(condition)
-    {
-        this._positions = new List<Vector2Int>(positions);
-        _chipTypesAndNums = new Dictionary<ChipSettingSO, int>(chipTypesAndNums);
-    }
-
-    public ChipSettingConditionChip(ChipSettingConditionChip orgn) : this(orgn.Condition, orgn.Positions, orgn.ChipTypesAndNums)
+    public ChipSettingConditionChip()
     {
 
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// 回路をグラフで整理する。
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 public class ChipGraph
 {
+    private Board _board;
     private abstract class Node { }
 
     private class ChipNode : Node
@@ -19,6 +21,11 @@ public class ChipGraph
 
         public List<Node> TargetTo { get; } = new();
         public List<Node> TargetFrom { get; } = new();
+
+        public ChipNode(Chip chip)
+        {
+            Chip = chip;
+        }
     }
 
     private class TimingNode : Node
@@ -38,7 +45,7 @@ public class ChipGraph
     {
         public GameEnums.Reference Reference;
 
-        public List<ChipNode> From;
+        public List<ChipNode> From { get; }
 
         public ReferenceNode(GameEnums.Reference reference, List<ChipNode> from)
         {
@@ -51,7 +58,7 @@ public class ChipGraph
     {
         public GameEnums.Resource Resource;
 
-        public List<ChipNode> From;
+        public List<ChipNode> From { get; }
 
         public ResourceNode(GameEnums.Resource resource, List<ChipNode> from)
         {
@@ -60,29 +67,87 @@ public class ChipGraph
         }
     }
 
-    private TimingNode _timHit = new TimingNode(GameEnums.Timing.Hit, new List<ChipNode>());
-    private TimingNode _timTakeDamage = new TimingNode(GameEnums.Timing.TakeDamage, new List<ChipNode>());
-    private TimingNode _timOrbTrigger = new TimingNode(GameEnums.Timing.OrbTrigger, new List<ChipNode>());
-    private TimingNode _timStaminaTrigger = new TimingNode(GameEnums.Timing.StaminaTrigger, new List<ChipNode>());
-    private TimingNode _timHPTrigger = new TimingNode(GameEnums.Timing.HPTrigger, new List<ChipNode>());
+    private readonly TimingNode[] _timingHubs = new TimingNode[System.Enum.GetValues(typeof(GameEnums.Timing)).Length];
+    private readonly ReferenceNode[] _referenceHubs = new ReferenceNode[System.Enum.GetValues(typeof(GameEnums.Reference)).Length];
+    private readonly ResourceNode[] _resourceHubs = new ResourceNode[System.Enum.GetValues(typeof(GameEnums.Resource)).Length];
 
-    private ReferenceNode _refMP = new ReferenceNode(GameEnums.Reference.MP, new List<ChipNode>());
-    private ReferenceNode _refStamina = new ReferenceNode(GameEnums.Reference.Stamina, new List<ChipNode>());
-    private ReferenceNode _refHP = new ReferenceNode(GameEnums.Reference.HP, new List<ChipNode>());
-    private ReferenceNode _refEnemy = new ReferenceNode(GameEnums.Reference.Enemy, new List<ChipNode>());
+    private Dictionary<Chip, ChipNode> _chipToNode = new Dictionary<Chip, ChipNode>();
 
-    private ResourceNode _resMP = new ResourceNode(GameEnums.Resource.MP, new List<ChipNode>());
-    private ResourceNode _resStamina = new ResourceNode(GameEnums.Resource.Stamina, new List<ChipNode>());
-    private ResourceNode _resHP = new ResourceNode(GameEnums.Resource.HP, new List<ChipNode>());
-    private ResourceNode _resEffect = new ResourceNode(GameEnums.Resource.Effect, new List<ChipNode>());
-
-    private Dictionary<Chip, Node> _chipToNode = new Dictionary<Chip, Node>();
-
-    public void BoardUpdate(Chip removed, Chip attached)
+    /// <summary>
+    /// 
+    /// Boardが更新されたときのみ走るため、Boardからのみ呼ばれる。
+    /// </summary>
+    public void Rebuild(Dictionary<Vector2Int, Chip> chips)
     {
-        if (removed != null)
-        {
+        // _chipToNodeのChipを削除
+        _chipToNode.Clear();
 
+        // HubのFromを全て削除
+        foreach (var hub in _timingHubs)
+        {
+            hub.From.Clear();
         }
+        foreach (var hub in _referenceHubs)
+        {
+            hub.From.Clear();
+        }
+        foreach (var hub in _resourceHubs)
+        {
+            hub.From.Clear();
+        }
+
+        //全てのチップのNodeを作る
+        foreach (Chip chip in chips.Values)
+        {
+            _chipToNode.Add(chip, new ChipNode(chip));
+        }
+
+        // 周囲のチップを見て無効なチップをUnavailableにする
+        foreach (var chip in _chipToNode.Keys) // ボード上のチップについて1つずつ操作
+        {
+            var con = chip.Condition; // チップの条件
+            if (con is ChipSettingConditionChip conc) // 条件がある場合
+            {
+                List<Chip> chiplist = _board.GetChipFromPos(conc.Positions); // 条件となる範囲に実際に存在するチップのList
+                var ctan = new Dictionary<ChipSettingSO, int>(conc.ChipTypesAndNums); // 必要なチップの種類とその個数
+                foreach (var c in chiplist) // List内のチップと条件のチップが一致している場合カウントを減らして、0になったらRemove
+                {
+                    if (ctan.TryGetValue(c.Setting, out int count))
+                    {
+                        if (count > 0)
+                        {
+                            ctan[c.Setting] = count - 1;
+                        }
+                        else
+                        {
+                            ctan.Remove(c.Setting);
+                        }
+                    }
+                }
+
+                if (ctan.Count > 0) // 最終的に条件の中身が全て消えていれば条件を満たしている
+                {
+                    chip.SetAvailability(GameEnums.Availability.Unavailable);
+                }
+                else
+                {
+                    chip.SetAvailability(GameEnums.Availability.Available);
+                }
+            }
+            else // 条件がない場合
+            {
+                chip.SetAvailability(GameEnums.Availability.Available);
+            }
+        }
+
+        // 有効なチップのエッジをつなぐ
+        foreach (var chip in _chipToNode.Keys)
+        {
+            // Timingをつなぐ
+
+            // Referenceをつなぐ
+            // Resourceをつなぐ
+        }
+
     }
 }

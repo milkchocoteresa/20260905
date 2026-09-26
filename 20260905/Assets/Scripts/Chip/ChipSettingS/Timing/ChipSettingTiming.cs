@@ -1,20 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// チップの発動タイミング
-/// </summary>
 [System.Serializable]
 public class ChipSettingTiming
 {
-    [SerializeField] private GameEnums.Timing _timing;
-    public GameEnums.Timing Timing => _timing;
+    [SerializeReference, SubclassSelector] private TimingDetail _trigger;
+    [SerializeReference, SubclassSelector] private TimingDetail _enable;
+    [SerializeReference, SubclassSelector] private TimingDetail _disable;
+    [SerializeReference, SubclassSelector] private List<TimingDetail> _reference;
 
-    public ChipSettingTiming(GameEnums.Timing timing)
-    {
-        this._timing = timing;
-    }
+    public TimingDetail Trigger => _trigger;
+    public TimingDetail Enable => _enable;
+    public TimingDetail Disable => _disable;
+    public IReadOnlyList<TimingDetail> Reference => _reference;
 
-    public ChipSettingTiming(ChipSettingTiming orgn) : this(orgn.Timing)
+    public ChipSettingTiming()
     {
 
     }

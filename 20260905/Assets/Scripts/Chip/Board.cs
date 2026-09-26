@@ -3,25 +3,20 @@ using UnityEngine;
 
 public abstract class Board
 {
-    protected Chip[,] _chips;
-
-    public Board(Vector2Int size)
-    {
-        _chips = new Chip[size.x, size.y];
-    }
+    protected Dictionary<Vector2Int, Chip> _chips = new Dictionary<Vector2Int, Chip>();
 
     /// <summary>
     /// ソケットの場所と組み込むチップを受け取り、成功したかをbool値を返す。
     /// </summary>
     protected bool AddChip(Vector2Int pos, Chip chip)
     {
-        if (chip == null || _chips[pos.x, pos.y] != null)
+        if (chip == null || _chips.ContainsKey(pos))
         {
             return false;
         }
         else
         {
-            _chips[pos.x, pos.y] = chip;
+            _chips.Add(pos, chip);
             return true;
         }
     }
@@ -31,15 +26,14 @@ public abstract class Board
     /// </summary>
     protected Chip RemoveChip(Vector2Int pos)
     {
-        Chip removed;
-        if ((removed = _chips[pos.x, pos.y]) == null)
+        if (_chips.TryGetValue(pos, out Chip removed))
         {
-            return null;
+            _chips.Remove(pos);
+            return removed;
         }
         else
         {
-            _chips[pos.x, pos.y] = null;
-            return removed;
+            return null;
         }
     }
 
@@ -51,12 +45,24 @@ public abstract class Board
 
     public abstract Chip UnregisterChip(Vector2Int pos);
 
-    public List<Chip> GetChipFromPos(List<Vector2Int> positions)
+    public List<Chip> GetChipFromPos(IReadOnlyList<Vector2Int> readOnlyPositions)
     {
         List<Chip> list = new List<Chip>();
-        foreach (Vector2Int pos in positions)
+        if (readOnlyPositions is List<Vector2Int> positions)
         {
-            list.Add(_chips[pos.x, pos.y]);
+            foreach (Vector2Int pos in positions)
+            {
+                _chips.TryGetValue(pos, out Chip chip);
+                list.Add(chip);
+            }
+        }
+        else
+        {
+            foreach (Vector2Int pos in readOnlyPositions)
+            {
+                _chips.TryGetValue(pos, out Chip chip);
+                list.Add(chip);
+            }
         }
         return list;
     }

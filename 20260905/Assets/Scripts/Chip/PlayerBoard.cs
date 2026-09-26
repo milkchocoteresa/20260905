@@ -4,7 +4,7 @@ public class PlayerBoard : Board
 {
     private Inventory _inventory;
 
-    public PlayerBoard(Vector2Int Size, Inventory inventory) : base(Size)
+    public PlayerBoard(Inventory inventory)
     {
         _inventory = inventory;
     }

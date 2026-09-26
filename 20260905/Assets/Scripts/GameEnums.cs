@@ -72,17 +72,13 @@ public class GameEnums
     }
 
     /// <summary>
-    /// 発動タイミング<br/>
-    /// <list type="bullet">
-    ///   <item><term>None</term><description>発動しない</description></item>
-    ///   <item><term>Passive</term><description>常時</description></item>
-    /// </list>
-    /// ===離散的タイミング===(基本情報: 発動までに必要な回数, 発動までにかかる時間, 発動可能回数)<br/>
+    /// 発動タイミング(Noneはタイミングなし、またはパッシブ扱い)<br/>
+    /// 以下は全て離散的発動タイミング(基本情報: 発動までに必要な発火の回数, 発動までにかかる時間, 発動可能回数)<br/>
     /// =====追加情報が不要なもの=====
     /// <list type="bullet">
+    ///   <item><term>AtStart</term><description>戦闘開始時</description></item>
     ///   <item><term>Hit</term><description>攻撃がヒットしたとき</description></item>
     ///   <item><term>TakeDamage</term><description>被ダメ時</description></item>
-    ///   <item><term>FullResource</term><description>一定以上のリソースがチップに貯まったとき</description></item>
     ///   <item><term>OrbTrigger</term><description>オーブの効果が発動したとき</description></item>
     /// </list>
     /// =====追加情報が必要なもの=====
@@ -91,19 +87,12 @@ public class GameEnums
     ///   <item><term>StaminaTrigger</term><description>スタミナの変化に連動して</description></item>
     ///   <item><term>HPTrigger</term><description>HPの変化に連動して</description></item>
     /// </list>
-    /// ===連続的タイミング===
-    /// <list type="bullet">
-    ///   <item><term>RestrictedPassive</term><description>条件を満たしているとき常に</description></item>
-    /// </list>
-    /// </summary>
     public enum Timing // 発動タイミング
     {
-        None,           // 発動しない
-        Passive,        // 常時
-
-
-        // 離散的タイミングdiscrete(基本情報: 発動に必要な回数, 発動までの時間, 発動可能回数)
+        None,
+        // 基本情報: 発動に必要な発火の回数, 発動までの時間, 発動可能回数
         // 追加情報が不要なもの
+        AtStart,        // 戦闘開始時
         Hit,            // 攻撃ヒット時
         TakeDamage,     // 被ダメ時
         OrbTrigger,     // オーブの効果が発動したとき
@@ -112,10 +101,6 @@ public class GameEnums
         ChipActionTrigger,  // 指定した位置にあるチップに連動して(チップの位置を指定するためのVector2IntのList)
         StaminaTrigger,     // スタミナの変化に連動して(発動条件のスタミナ量の不等式 + 発動できる状態かどうかのbool値)
         HPTrigger,          // HPの変化に連動して(スタミナと同じ)
-
-
-        // 連続的タイミングcontinuous
-        RestrictedPassive,  // 条件を満たしているとき常に ONもOFFも上記の離散的タイミングを使用する。〇〇してからn秒間という形にしたい場合は発動までの秒数の数値で調節
     }
 
     /// <summary>
