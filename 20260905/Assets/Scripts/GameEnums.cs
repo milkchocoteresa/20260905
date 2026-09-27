@@ -50,7 +50,7 @@ public class GameEnums
     ///   <item><term>LessThan</term><description>–¢–</description></item>
     /// </list>
     /// </summary>
-    public enum Inequalities // ˆÈã, ˆÈ‰º, ‚æ‚èã, –¢–‚ğ•\‚·
+    public enum Inequality // ˆÈã, ˆÈ‰º, ‚æ‚èã, –¢–‚ğ•\‚·
     {
         AtLeast,    // ˆÈã
         AtMost,     // ˆÈ‰º

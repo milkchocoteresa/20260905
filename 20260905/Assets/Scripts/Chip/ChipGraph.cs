@@ -13,14 +13,17 @@ public class ChipGraph
     private class ChipNode : Node
     {
         public Chip Chip { get; }
-        public List<Node> TimingTo { get; } = new();
-        public List<Node> TimingFrom { get; } = new();
+        public List<Node> ReadTriggerTiming { get; } = new();
+        public List<ChipNode> TriggerTimingSubscribers { get; } = new();
 
-        public List<Node> ReferenceTo { get; } = new();
-        public List<Node> ReferenceFrom { get; } = new();
+        public List<Node> ReadReferenceTiming { get; } = new();
+        public List<ChipNode> ReferenceTimingSubscriber { get; } = new();
 
-        public List<Node> TargetTo { get; } = new();
-        public List<Node> TargetFrom { get; } = new();
+        public List<Node> ReadReference { get; } = new();
+        public List<ChipNode> ReferenceSubscribers { get; } = new();
+
+        public List<Node> ReadTarget { get; } = new();
+        public List<ChipNode> TargetSubscribers { get; } = new();
 
         public ChipNode(Chip chip)
         {
@@ -32,12 +35,12 @@ public class ChipGraph
     {
         public GameEnums.Timing Timing;
 
-        public List<ChipNode> From { get; }
+        public List<ChipNode> Subscribers { get; }
 
-        public TimingNode(GameEnums.Timing timing, List<ChipNode> from)
+        public TimingNode(GameEnums.Timing timing, List<ChipNode> s)
         {
             Timing = timing;
-            From = from;
+            Subscribers = s;
         }
     }
 
@@ -45,12 +48,12 @@ public class ChipGraph
     {
         public GameEnums.Reference Reference;
 
-        public List<ChipNode> From { get; }
+        public List<ChipNode> Subscribers { get; }
 
-        public ReferenceNode(GameEnums.Reference reference, List<ChipNode> from)
+        public ReferenceNode(GameEnums.Reference reference, List<ChipNode> s)
         {
             Reference = reference;
-            From = from;
+            Subscribers = s;
         }
     }
 
@@ -58,12 +61,12 @@ public class ChipGraph
     {
         public GameEnums.Resource Resource;
 
-        public List<ChipNode> From { get; }
+        public List<ChipNode> Subscribers { get; }
 
-        public ResourceNode(GameEnums.Resource resource, List<ChipNode> from)
+        public ResourceNode(GameEnums.Resource resource, List<ChipNode> s)
         {
             Resource = resource;
-            From = from;
+            Subscribers = s;
         }
     }
 
@@ -85,15 +88,15 @@ public class ChipGraph
         // HubのFromを全て削除
         foreach (var hub in _timingHubs)
         {
-            hub.From.Clear();
+            hub.Subscribers.Clear();
         }
         foreach (var hub in _referenceHubs)
         {
-            hub.From.Clear();
+            hub.Subscribers.Clear();
         }
         foreach (var hub in _resourceHubs)
         {
-            hub.From.Clear();
+            hub.Subscribers.Clear();
         }
 
         //全てのチップのNodeを作る

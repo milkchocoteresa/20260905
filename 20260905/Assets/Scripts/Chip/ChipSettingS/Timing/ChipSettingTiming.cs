@@ -1,21 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ChipSettingTiming
+public abstract class ChipSettingTiming
 {
-    [SerializeReference, SubclassSelector] private TimingDetail _trigger;
-    [SerializeReference, SubclassSelector] private TimingDetail _enable;
-    [SerializeReference, SubclassSelector] private TimingDetail _disable;
-    [SerializeReference, SubclassSelector] private List<TimingDetail> _reference;
+    [SerializeField] private GameEnums.Timing _timing;
+    [SerializeField] private int _threshold = 1;                    // ”­“®‚Ü‚Å‚É•K—v‚È”­‰Î‰ñ”
+    [SerializeField] private float _timeToActivation = 0f;          // Œø‰Ê‚ª”­“®‚·‚é‚Ü‚Å‚Ì•b”
+    [SerializeField] private int _availableActivationTimes = -1;    // ”­“®‰Â”\‰ñ”
 
-    public TimingDetail Trigger => _trigger;
-    public TimingDetail Enable => _enable;
-    public TimingDetail Disable => _disable;
-    public IReadOnlyList<TimingDetail> Reference => _reference;
-
-    public ChipSettingTiming()
-    {
-
-    }
+    public GameEnums.Timing Timing => _timing;
+    public int Threshold => _threshold;
+    public float TimeToActivation => _timeToActivation;
+    public int AvailableActivationTimes => _availableActivationTimes;
 }

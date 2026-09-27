@@ -10,8 +10,9 @@ public class Chip
         Mobility = setting.Mobility;
         Condition = setting.Condition;
         Rule = setting.ChipRule;
-        ActionAvailability = GameEnums.Availability.Available;
-
+        _calculation = setting.ChipCalculationSO;
+        _eventReceiver = setting.EventReceiver;
+        _eventsCount = new int[_eventReceiver.ArrayLength];
     }
 
     public ChipSettingSO Setting { get; private set; }
@@ -21,11 +22,9 @@ public class Chip
     public GameEnums.Mobility Mobility { get; private set; }
     public ChipSettingCondition Condition { get; }
     public ChipSettingRule Rule { get; }
-
-    public GameEnums.Availability ActionAvailability { get; private set; }
-    public int[] referenceCount { get; private set; }
-
-
+    private readonly ChipCalculationSO _calculation;
+    private readonly EventReceiverSO _eventReceiver;
+    private readonly int[] _eventsCount;
 
     public void SetAvailability(GameEnums.Availability newAva)
     {
@@ -40,5 +39,10 @@ public class Chip
     public void Execute(ChipExecutionContext context, List<ChipActionResult> result)
     {
         _calculation.Calculate(context, result);
+    }
+
+    public void EventReceive(GameEnums.Timing evnt)
+    {
+        _eventReceiver.OnEventReceive(evnt, _eventsCount);
     }
 }
