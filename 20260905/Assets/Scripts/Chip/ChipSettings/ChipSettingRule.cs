@@ -14,8 +14,8 @@ public class ChipSettingRule
     [SerializeReference, SubclassSelector] private ChipSettingTarget _target;
 
     public ChipSettingTiming TriggerTiming => _triggerTiming;
-    public IReadOnlyList<ChipSettingTiming> ReferenceTimings => _referenceTimings;
-    public IReadOnlyList<ChipSettingReference> References => _references;
-    public IReadOnlyList<ChipSettingResource> Resource => _resources;
+    public List<ChipSettingTiming> ReferenceTimings => _referenceTimings;
+    public List<ChipSettingReference> References => _references;
+    public List<ChipSettingResource> Resources => _resources;
     public ChipSettingTarget Target => _target;
 }

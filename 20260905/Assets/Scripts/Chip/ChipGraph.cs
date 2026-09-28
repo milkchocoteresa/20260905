@@ -7,7 +7,48 @@ using UnityEngine;
 /// </summary>
 public class ChipGraph
 {
-    private Board _board;
+    public ChipGraph(Board board)
+    {
+        _board = board;
+
+        _triggerTimingHubs = new Dictionary<GameEnums.Timing, TimingNode>();
+        foreach (GameEnums.Timing t in System.Enum.GetValues(typeof(GameEnums.Timing)))
+        {
+            if (t == GameEnums.Timing.None || t == GameEnums.Timing.Passive || t == GameEnums.Timing.ChipActionTrigger)
+            {
+                continue;
+            }
+            _triggerTimingHubs.Add(t, new TimingNode(new List<ChipNode>()));
+        }
+
+        _referenceTimingHubs = new Dictionary<GameEnums.Timing, TimingNode>();
+        foreach (GameEnums.Timing t in System.Enum.GetValues(typeof(GameEnums.Timing)))
+        {
+            if (t == GameEnums.Timing.None || t == GameEnums.Timing.Passive || t == GameEnums.Timing.ChipActionTrigger)
+            {
+                continue;
+            }
+            _referenceTimingHubs.Add(t, new TimingNode(new List<ChipNode>()));
+        }
+
+        _normalReferenceHubs = new Dictionary<GameEnums.Reference, ReferenceNode>();
+        foreach (GameEnums.Reference r in System.Enum.GetValues(typeof(GameEnums.Reference)))
+        {
+            if (r == GameEnums.Reference.None || r == GameEnums.Reference.Chip || r == GameEnums.Reference.Resource)
+            {
+                continue;
+            }
+            _normalReferenceHubs.Add(r, new ReferenceNode(new List<ChipNode>()));
+        }
+
+        _resourceReferenceHubs = new Dictionary<GameEnums.Resource, ReferenceNode>();
+        foreach (GameEnums.Resource r in System.Enum.GetValues(typeof(GameEnums.Resource)))
+        {
+            _resourceReferenceHubs.Add(r, new ReferenceNode(new List<ChipNode>()));
+        }
+    }
+
+    private readonly Board _board;
     private abstract class Node { }
 
     private class ChipNode : Node
@@ -17,13 +58,10 @@ public class ChipGraph
         public List<ChipNode> TriggerTimingSubscribers { get; } = new();
 
         public List<Node> ReadReferenceTiming { get; } = new();
-        public List<ChipNode> ReferenceTimingSubscriber { get; } = new();
+        public List<ChipNode> ReferenceTimingSubscribers { get; } = new();
 
         public List<Node> ReadReference { get; } = new();
         public List<ChipNode> ReferenceSubscribers { get; } = new();
-
-        public List<Node> ReadTarget { get; } = new();
-        public List<ChipNode> TargetSubscribers { get; } = new();
 
         public ChipNode(Chip chip)
         {
@@ -33,46 +71,28 @@ public class ChipGraph
 
     private class TimingNode : Node
     {
-        public GameEnums.Timing Timing;
-
         public List<ChipNode> Subscribers { get; }
 
-        public TimingNode(GameEnums.Timing timing, List<ChipNode> s)
+        public TimingNode(List<ChipNode> s)
         {
-            Timing = timing;
             Subscribers = s;
         }
     }
 
     private class ReferenceNode : Node
     {
-        public GameEnums.Reference Reference;
-
         public List<ChipNode> Subscribers { get; }
 
-        public ReferenceNode(GameEnums.Reference reference, List<ChipNode> s)
+        public ReferenceNode(List<ChipNode> s)
         {
-            Reference = reference;
             Subscribers = s;
         }
     }
 
-    private class ResourceNode : Node
-    {
-        public GameEnums.Resource Resource;
-
-        public List<ChipNode> Subscribers { get; }
-
-        public ResourceNode(GameEnums.Resource resource, List<ChipNode> s)
-        {
-            Resource = resource;
-            Subscribers = s;
-        }
-    }
-
-    private readonly TimingNode[] _timingHubs = new TimingNode[System.Enum.GetValues(typeof(GameEnums.Timing)).Length];
-    private readonly ReferenceNode[] _referenceHubs = new ReferenceNode[System.Enum.GetValues(typeof(GameEnums.Reference)).Length];
-    private readonly ResourceNode[] _resourceHubs = new ResourceNode[System.Enum.GetValues(typeof(GameEnums.Resource)).Length];
+    private readonly Dictionary<GameEnums.Timing, TimingNode> _triggerTimingHubs;            // チップの効果発動のトリガーとなるタイミングのハブ 
+    private readonly Dictionary<GameEnums.Timing, TimingNode> _referenceTimingHubs;          // チップの効果発動時の参照に使うタイミングのハブ
+    private readonly Dictionary<GameEnums.Reference, ReferenceNode> _normalReferenceHubs;    // リソース以外の参照のハブ
+    private readonly Dictionary<GameEnums.Resource, ReferenceNode> _resourceReferenceHubs;   // リソース参照ハブ
 
     private Dictionary<Chip, ChipNode> _chipToNode = new Dictionary<Chip, ChipNode>();
 
@@ -86,15 +106,19 @@ public class ChipGraph
         _chipToNode.Clear();
 
         // HubのFromを全て削除
-        foreach (var hub in _timingHubs)
+        foreach (var hub in _triggerTimingHubs.Values)
         {
             hub.Subscribers.Clear();
         }
-        foreach (var hub in _referenceHubs)
+        foreach (var hub in _referenceTimingHubs.Values)
         {
             hub.Subscribers.Clear();
         }
-        foreach (var hub in _resourceHubs)
+        foreach (var hub in _normalReferenceHubs.Values)
+        {
+            hub.Subscribers.Clear();
+        }
+        foreach (var hub in _resourceReferenceHubs.Values)
         {
             hub.Subscribers.Clear();
         }
@@ -144,13 +168,68 @@ public class ChipGraph
         }
 
         // 有効なチップのエッジをつなぐ
-        foreach (var chip in _chipToNode.Keys)
+        foreach (KeyValuePair<Chip, ChipNode> kvp in _chipToNode)
         {
-            // Timingをつなぐ
+            ChipSettingRule rule = kvp.Key.Rule;
+
+            // TriggerTimingをつなぐ
+            ChipSettingTiming tcst = rule.TriggerTiming;
+            if (tcst is ChipSettingTimingCAT catTTiming)
+            {
+                foreach (var chip in _board.GetChipFromPos(catTTiming.Positions))
+                {
+                    _chipToNode.TryGetValue(chip, out ChipNode chipNode);
+                    kvp.Value.ReadTriggerTiming.Add(chipNode);
+                    chipNode.TriggerTimingSubscribers.Add(kvp.Value);
+                }
+            }
+            else if (tcst.Timing == GameEnums.Timing.None || tcst.Timing == GameEnums.Timing.Passive) { }
+            else
+            {
+                _triggerTimingHubs.TryGetValue(rule.TriggerTiming.Timing, out TimingNode ttNode);
+                kvp.Value.ReadTriggerTiming.Add(ttNode);
+                ttNode.Subscribers.Add(kvp.Value);
+            }
+
+            // ReferenceTimingをつなぐ
+            foreach (ChipSettingTiming rcst in rule.ReferenceTimings)
+            {
+                if (rcst is ChipSettingTimingCAT catRTiming)
+                {
+                    foreach (var chip in _board.GetChipFromPos(catRTiming.Positions))
+                    {
+                        _chipToNode.TryGetValue(chip, out ChipNode chipNode);
+                        kvp.Value.ReadReferenceTiming.Add(chipNode);
+                        chipNode.ReferenceTimingSubscribers.Add(kvp.Value);
+                    }
+                }
+                else if (rcst.Timing == GameEnums.Timing.None || rcst.Timing == GameEnums.Timing.Passive) { }
+                else
+                {
+                    _referenceTimingHubs.TryGetValue(rcst.Timing, out TimingNode rtNode);
+                    kvp.Value.ReadReferenceTiming.Add(rtNode);
+                    rtNode.Subscribers.Add(kvp.Value);
+                }
+            }
 
             // Referenceをつなぐ
-            // Resourceをつなぐ
+            foreach (ChipSettingReference rcsr in rule.References)
+            {
+                if (rcsr is ChipSettingReferenceResource rr)
+                {
+                    _resourceReferenceHubs.TryGetValue(rr.Resource, out ReferenceNode refNode);
+                    kvp.Value.ReadReference.Add(refNode);
+                    refNode.Subscribers.Add(kvp.Value);
+                }
+                else
+                {
+                    _normalReferenceHubs.TryGetValue(rcsr.Reference, out ReferenceNode refNode);
+                    kvp.Value.ReadReference.Add(refNode);
+                    refNode.Subscribers.Add(kvp.Value);
+                }
+            }
         }
-
     }
+
+    //
 }

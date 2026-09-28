@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChipSettngTimingCAT : ChipSettingTiming
+public class ChipSettingTimingCAT : ChipSettingTiming
 {
     [SerializeField] private List<Vector2Int> _positions;
 

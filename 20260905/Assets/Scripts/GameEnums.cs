@@ -72,7 +72,11 @@ public class GameEnums
     }
 
     /// <summary>
-    /// 発動タイミング(Noneはタイミングなし、またはパッシブ扱い)<br/>
+    /// 発動タイミング<br/>
+    /// <list type="bullet">
+    ///   <item><term>None</term><description>なし</description></item>
+    ///   <item><term>Passive</term><description>パッシブ</description></item>
+    /// </list>
     /// 以下は全て離散的発動タイミング(基本情報: 発動までに必要な発火の回数, 発動までにかかる時間, 発動可能回数)<br/>
     /// =====追加情報が不要なもの=====
     /// <list type="bullet">
@@ -87,9 +91,11 @@ public class GameEnums
     ///   <item><term>StaminaTrigger</term><description>スタミナの変化に連動して</description></item>
     ///   <item><term>HPTrigger</term><description>HPの変化に連動して</description></item>
     /// </list>
+    /// </summary>
     public enum Timing // 発動タイミング
     {
         None,
+        Passive,
         // 基本情報: 発動に必要な発火の回数, 発動までの時間, 発動可能回数
         // 追加情報が不要なもの
         AtStart,        // 戦闘開始時
@@ -108,20 +114,18 @@ public class GameEnums
     /// <list type="bullet">
     ///   <item><term>None</term><description>何も参照しない</description></item>
     ///   <item><term>Chip</term><description>指定した位置にあるチップ</description></item>
-    ///   <item><term>MP</term><description>MP</description></item>
-    ///   <item><term>Stamina</term><description>Stamina</description></item>
-    ///   <item><term>HP</term><description>HP</description></item>
+    ///   <item><term>Resource</term><description>リソース</description></item>
     ///   <item><term>Enemy</term><description>敵</description></item>
+    ///   <item><term>Orb</term><description>地面に落ちているオーブ</description></item>
     /// </list>
     /// </summary>
     public enum Reference // 何を参照するか
     {
         None,           // 何も参照しない
         Chip,           // 指定した位置にあるチップ(ChipSettingSO)
-        MP,             // MP
-        Stamina,        // スタミナ
-        HP,             // HP
-        Enemy,          // 敵(数、HP)
+        Resource,       // リソース
+        Enemy,          // 敵
+        Orb,           // 地面に落ちているオーブ
     }
 
     /// <summary>

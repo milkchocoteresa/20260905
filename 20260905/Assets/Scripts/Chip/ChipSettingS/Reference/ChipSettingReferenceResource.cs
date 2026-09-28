@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class ChipSettingReferenceResource : ChipSettingReference
 {
-    [SerializeField] private ChipSettingResource _resource;
-    public ChipSettingResource Resource => _resource;
+    [SerializeField] private GameEnums.Resource _resource;
+    public GameEnums.Resource Resource => _resource;
 
     public ChipSettingReferenceResource()
     {

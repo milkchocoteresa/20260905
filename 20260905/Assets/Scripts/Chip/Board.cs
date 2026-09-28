@@ -45,24 +45,13 @@ public abstract class Board
 
     public abstract Chip UnregisterChip(Vector2Int pos);
 
-    public List<Chip> GetChipFromPos(IReadOnlyList<Vector2Int> readOnlyPositions)
+    public List<Chip> GetChipFromPos(List<Vector2Int> positions)
     {
         List<Chip> list = new List<Chip>();
-        if (readOnlyPositions is List<Vector2Int> positions)
+        foreach (Vector2Int pos in positions)
         {
-            foreach (Vector2Int pos in positions)
-            {
-                _chips.TryGetValue(pos, out Chip chip);
-                list.Add(chip);
-            }
-        }
-        else
-        {
-            foreach (Vector2Int pos in readOnlyPositions)
-            {
-                _chips.TryGetValue(pos, out Chip chip);
-                list.Add(chip);
-            }
+            _chips.TryGetValue(pos, out Chip chip);
+            list.Add(chip);
         }
         return list;
     }
