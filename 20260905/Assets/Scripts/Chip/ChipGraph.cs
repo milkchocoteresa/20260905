@@ -97,7 +97,6 @@ public class ChipGraph
     private Dictionary<Chip, ChipNode> _chipToNode = new Dictionary<Chip, ChipNode>();
 
     /// <summary>
-    /// 
     /// Boardが更新されたときのみ走るため、Boardからのみ呼ばれる。
     /// </summary>
     public void Rebuild(Dictionary<Vector2Int, Chip> chips)
@@ -231,5 +230,19 @@ public class ChipGraph
         }
     }
 
-    //
+    /// <summary>
+    /// トリガーに応じて回路を走らせるメソッド。回路のトリガーの入り口となるイベントに登録しておく必要がある。
+    /// </summary>
+    private void TriggerCircuit(TriggerContext context)
+    {
+        // 参照用タイミングに先に通知
+        _referenceTimingHubs.TryGetValue(context.Timing, out TimingNode rtNode);
+        foreach (ChipNode cNode in rtNode.Subscribers)
+        {
+            cNode.Chip.ReferenceEventReceive(context);
+        }
+
+        // トリガータイミングで効果の発動Listを作成
+        _triggerTimingHubs.TryGetValue(context.Timing, out TimingNode ttNode);
+    }
 }

@@ -84,11 +84,11 @@ public class GameEnums
     ///   <item><term>Hit</term><description>攻撃がヒットしたとき</description></item>
     ///   <item><term>TakeDamage</term><description>被ダメ時</description></item>
     ///   <item><term>OrbTrigger</term><description>オーブの効果が発動したとき</description></item>
+    ///   <item><term>ChipActionTrigger</term><description>指定した位置にあるチップに連動して</description></item>
+    ///   <item><term>StaminaTrigger</term><description>スタミナの変化に連動して</description></item>
     /// </list>
     /// =====追加情報が必要なもの=====
     /// <list type="bullet">
-    ///   <item><term>ChipActionTrigger</term><description>指定した位置にあるチップに連動して</description></item>
-    ///   <item><term>StaminaTrigger</term><description>スタミナの変化に連動して</description></item>
     ///   <item><term>HPTrigger</term><description>HPの変化に連動して</description></item>
     /// </list>
     /// </summary>
@@ -96,17 +96,18 @@ public class GameEnums
     {
         None,
         Passive,
+
         // 基本情報: 発動に必要な発火の回数, 発動までの時間, 発動可能回数
         // 追加情報が不要なもの
-        AtStart,        // 戦闘開始時
-        Hit,            // 攻撃ヒット時
-        TakeDamage,     // 被ダメ時
-        OrbTrigger,     // オーブの効果が発動したとき
+        AtStart,            // 戦闘開始時
+        Hit,                // 攻撃ヒット時
+        TakeDamage,         // 被ダメ時
+        OrbTrigger,         // オーブの効果が発動したとき
+        StaminaTrigger,     // スタミナの変化に連動して
+        HPTrigger,          // HPの変化に連動して
 
         // 追加情報が必要なもの
         ChipActionTrigger,  // 指定した位置にあるチップに連動して(チップの位置を指定するためのVector2IntのList)
-        StaminaTrigger,     // スタミナの変化に連動して(発動条件のスタミナ量の不等式 + 発動できる状態かどうかのbool値)
-        HPTrigger,          // HPの変化に連動して(スタミナと同じ)
     }
 
     /// <summary>

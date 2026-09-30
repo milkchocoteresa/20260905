@@ -11,8 +11,8 @@ public class ChipSettingSO : ScriptableObject
     [SerializeReference, SubclassSelector] private ChipSettingCondition _condition;
 
     [SerializeField] private ChipSettingRule _chipRule;
-    [SerializeField] private ChipCalculationSO _chipCalculationSO;
-    [SerializeField] private EventReceiverSO _eventReceiver;
+    [SerializeField] private TriggerTimingReceiverSO _triggerTimingReceiver;
+    [SerializeField] private ReferenceTimingReceiverSO _referenceTimingReceiver;
 
     // 見た目のスプライト追加
 
@@ -22,6 +22,6 @@ public class ChipSettingSO : ScriptableObject
 
     public ChipSettingCondition Condition => _condition;
     public ChipSettingRule ChipRule => _chipRule;
-    public ChipCalculationSO ChipCalculationSO => _chipCalculationSO;
-    public EventReceiverSO EventReceiver => _eventReceiver;
+    public TriggerTimingReceiverSO TriggerTimingReceiver => _triggerTimingReceiver;
+    public ReferenceTimingReceiverSO ReferenceTimingReceiver => _referenceTimingReceiver;
 }

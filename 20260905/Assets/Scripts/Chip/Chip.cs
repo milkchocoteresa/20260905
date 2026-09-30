@@ -10,21 +10,24 @@ public class Chip
         Mobility = setting.Mobility;
         Condition = setting.Condition;
         Rule = setting.ChipRule;
-        _calculation = setting.ChipCalculationSO;
-        _eventReceiver = setting.EventReceiver;
-        _eventsCount = new int[_eventReceiver.ArrayLength];
+        _triggerTimingReceiver = setting.TriggerTimingReceiver;
+        _referenceTimingReceiver = setting.ReferenceTimingReceiver;
+        _eventsCount = new int[_referenceTimingReceiver.ArrayLength];
+        _triggerTimingData = new TriggerTimingData(_triggerTimingData.ThresholdCount, _triggerTimingData.AvailableActivationTimesCount);
     }
 
-    public ChipSettingSO Setting { get; private set; }
+    public readonly ChipSettingSO Setting;
 
     public GameEnums.Role Role { get; }
     public GameEnums.Availability Availability { get; private set; }
     public GameEnums.Mobility Mobility { get; private set; }
-    public ChipSettingCondition Condition { get; }
-    public ChipSettingRule Rule { get; }
-    private readonly ChipCalculationSO _calculation;
-    private readonly EventReceiverSO _eventReceiver;
-    private readonly int[] _eventsCount;
+    public readonly ChipSettingCondition Condition;
+    public readonly ChipSettingRule Rule;
+    private readonly TriggerTimingReceiverSO _triggerTimingReceiver;
+    private readonly ReferenceTimingReceiverSO _referenceTimingReceiver;
+
+    private readonly TriggerTimingData _triggerTimingData; // トリガータイミング用記録
+    private readonly int[] _eventsCount; // 参照用タイミングの記録
 
     public void SetAvailability(GameEnums.Availability newAva)
     {
@@ -36,13 +39,13 @@ public class Chip
         Mobility = newMob;
     }
 
-    public void Execute(ChipExecutionContext context, List<ChipActionResult> result)
+    public void Execute(TriggerContext context, List<ChipActionResult> result)
     {
-        _calculation.Calculate(context, result);
+        _triggerTimingReceiver.TriggerTimingReceive(_triggerTimingData, context, _eventsCount, result);
     }
 
-    public void EventReceive(GameEnums.Timing evnt)
+    public void ReferenceEventReceive(TriggerContext context)
     {
-        _eventReceiver.OnEventReceive(evnt, _eventsCount);
+        _referenceTimingReceiver.ReferenceTimingReceive(context, _eventsCount);
     }
 }
